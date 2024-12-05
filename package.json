@@ -12,5 +12,9 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "hardhat": "^2.22.17"
+  },
+  "dependencies": {
+    "@solarity/hardhat-zkit": "^0.5.3",
+    "circomlib": "^2.0.5"
   }
 }
