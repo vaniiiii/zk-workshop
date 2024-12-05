@@ -11,6 +11,10 @@
   "description": "",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@solarity/chai-zkit": "^0.3.0",
+    "@types/circomlibjs": "^0.1.6",
+    "circomlibjs": "^0.1.7",
+    "fixed-merkle-tree": "^0.7.3",
     "hardhat": "^2.22.17"
   },
   "dependencies": {
