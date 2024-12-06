@@ -20,7 +20,7 @@ interface IVerifier {
         uint256[2] memory pointA_,
         uint256[2][2] memory pointB_,
         uint256[2] memory pointC_,
-        uint256[2] memory publicSignals_
+        uint256[3] memory publicSignals_
     ) external returns (bool);
 }
 
@@ -37,12 +37,7 @@ abstract contract Tornado is MerkleTreeWithHistory, ReentrancyGuard {
         uint32 leafIndex,
         uint256 timestamp
     );
-    event Withdrawal(
-        address to,
-        bytes32 nullifierHash,
-        address indexed relayer,
-        uint256 fee
-    );
+    event Withdrawal(address to);
 
     /**
     @dev The constructor
@@ -91,7 +86,7 @@ abstract contract Tornado is MerkleTreeWithHistory, ReentrancyGuard {
         uint256[2] memory pointA_,
         uint256[2][2] memory pointB_,
         uint256[2] memory pointC_,
-        uint256[2] memory publicSignals_
+        uint256[3] memory publicSignals_
     ) external payable nonReentrant {
         bytes32 _root = bytes32(publicSignals_[0]);
         bytes32 _nullifierHash = bytes32(publicSignals_[1]);
@@ -106,18 +101,17 @@ abstract contract Tornado is MerkleTreeWithHistory, ReentrancyGuard {
             "Invalid withdraw proof"
         );
 
+        address payable _recipient = payable(
+            address(uint160(publicSignals_[2]))
+        );
+
         nullifierHashes[_nullifierHash] = true;
-        // _processWithdraw(_recipient, _relayer, _fee, _refund);
-        // emit Withdrawal(_recipient, _nullifierHash, _relayer, _fee);
+        _processWithdraw(_recipient);
+        emit Withdrawal(_recipient);
     }
 
     /** @dev this function is defined in a child contract */
-    function _processWithdraw(
-        address payable _recipient,
-        address payable _relayer,
-        uint256 _fee,
-        uint256 _refund
-    ) internal virtual;
+    function _processWithdraw(address payable _recipient) internal virtual;
 
     /** @dev whether a note is already spent */
     function isSpent(bytes32 _nullifierHash) public view returns (bool) {

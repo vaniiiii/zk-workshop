@@ -28,8 +28,11 @@ template CommitmentHasher() {
 
 // Verifies that commitment that corresponds to given secret and nullifier is included in the merkle tree of deposits
 template Withdraw(levels) {
+    // PUBLIC INPUTS
     signal input root;
     signal input nullifierHash;
+    signal input recipient;
+    // PRIVATE INPUTS
     signal input nullifier;
     signal input secret;
     signal input pathElements[levels];
@@ -47,6 +50,10 @@ template Withdraw(levels) {
         tree.pathElements[i] <== pathElements[i];
         tree.pathIndices[i] <== pathIndices[i];
     }
+    // Would be good to remove this for educational purposes/homework
+    signal recipientSquare;
+    recipientSquare <== recipient * recipient;
+
 }
 
-component main { public [root, nullifierHash]} = Withdraw(20);
+component main { public [root, nullifierHash, recipient]} = Withdraw(20);

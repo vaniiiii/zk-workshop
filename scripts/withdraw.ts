@@ -13,17 +13,25 @@ import { createTree } from "../utils/tree";
 import { zkit } from "hardhat";
 import { PrivateWithdrawGroth16 } from "@zkit";
 import { ProofWithdrawGroth16 } from "@zkit";
+import hre from "hardhat";
 
 async function withdraw(
   tornado: Tornado,
   circuit: Withdraw,
   proof: ProofWithdrawGroth16,
   root: string,
-  nullifierHash: string
+  nullifierHash: string,
+  recipient: string
 ) {
   logger.startBlock("STARTING WITHDRAW PROCESS");
+  logger.info(
+    `💰 Recipient balance before withdrawal: ${await hre.ethers.provider.getBalance(recipient)}`
+  );
   const calldata = await circuit.generateCalldata(proof);
   await tornado.withdraw(...calldata);
+  logger.success(
+    `🤑 Recipient balance after withdrawal: ${await hre.ethers.provider.getBalance(recipient)}`
+  );
   logger.endBlock("WITHDRAW SUCCESSFULL");
 }
 
@@ -44,6 +52,9 @@ async function main() {
     tree.indexOf(commitment.toString())
   );
 
+  // Generating recipient
+  const recipient = hre.ethers.Wallet.createRandom().address;
+
   // Create circuit representation
   const circuit = await zkit.getCircuit("Withdraw");
   // Create inputs
@@ -54,14 +65,23 @@ async function main() {
     secret,
     pathElements: pathElements.map((el) => BigInt(el)),
     pathIndices,
+    recipient: BigInt(recipient),
   };
   // Generate proof
   const proof = await circuit.generateProof(input);
   const nullifierHash = bigIntToHex(
     await pedersenHash(bigIntToBuffer(nullifier, 31))
   );
+
   // Withdraw
-  await withdraw(tornado, circuit, proof, tree.root.toString(), nullifierHash);
+  await withdraw(
+    tornado,
+    circuit,
+    proof,
+    tree.root.toString(),
+    nullifierHash,
+    recipient
+  );
 }
 
 main().catch((e) => {

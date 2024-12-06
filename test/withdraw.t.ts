@@ -15,6 +15,7 @@ import { PrivateWithdrawGroth16 } from "@zkit";
 describe("Withdraw Test", () => {
   let circuit: Withdraw;
   let verifier: WithdrawGroth16Verifier;
+  let recipient = hre.ethers.Wallet.createRandom().address;
 
   beforeEach(async () => {
     circuit = await zkit.getCircuit("Withdraw");
@@ -40,6 +41,7 @@ describe("Withdraw Test", () => {
       nullifierHash: await pedersenHash(bigIntToBuffer(nullifier, 31)),
       pathElements: pathElements.map((el) => BigInt(el)),
       pathIndices,
+      recipient: BigInt(recipient),
     };
 
     await expect(circuit).with.witnessInputs(input).to.have.witnessOutputs({});
@@ -67,6 +69,7 @@ describe("Withdraw Test", () => {
       nullifierHash: await pedersenHash(bigIntToBuffer(nullifier, 31)),
       pathElements: pathElements.map((el) => BigInt(el)),
       pathIndices,
+      recipient: BigInt(recipient),
     };
 
     await expect(expect(circuit).witnessInputs(input)).to.be.rejectedWith(
@@ -93,6 +96,7 @@ describe("Withdraw Test", () => {
       nullifierHash: await pedersenHash(bigIntToBuffer(nullifier, 31)),
       pathElements: pathElements.map((el) => BigInt(el)),
       pathIndices,
+      recipient: BigInt(recipient),
     };
 
     await expect(expect(circuit).with.witnessInputs(input)).to.be.rejectedWith(
@@ -116,6 +120,7 @@ describe("Withdraw Test", () => {
       nullifierHash: await pedersenHash(bigIntToBuffer(nullifier, 31)),
       pathElements: pathElements.map((el) => BigInt(el)),
       pathIndices,
+      recipient: BigInt(recipient),
     };
 
     const proof = await circuit.generateProof(input);
