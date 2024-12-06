@@ -44,6 +44,17 @@ function bigIntToBuffer(int: bigint, length: number): Buffer {
   return buffer;
 }
 
+function bigIntToHex(int: bigint, length = 32): string {
+  return "0x" + int.toString(16).padStart(length * 2, "0");
+}
+
+function hexToBigint(value: string) {
+  if (value.startsWith("0x")) {
+    return BigInt(value);
+  }
+  return BigInt("0x" + value);
+}
+
 async function generateCommitment(): Promise<{
   nullifier: bigint;
   secret: bigint;
@@ -61,4 +72,10 @@ async function generateCommitment(): Promise<{
   return { nullifier, secret, commitment };
 }
 
-export { pedersenHash, bigIntToBuffer, generateCommitment };
+export {
+  pedersenHash,
+  bigIntToHex,
+  bigIntToBuffer,
+  hexToBigint,
+  generateCommitment,
+};
