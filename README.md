@@ -8,8 +8,13 @@
   <summary><a href="#resources--prerequisites">Resources & Setup</a></summary>
   <ul>
     <li><a href="#essential-reading">Essential Reading</a></li>
-    <li><a href="#requirements">Requirements</a></li>
-    <li><a href="#setup">Installation & Setup</a></li>
+    <li>
+      <a href="#requirements--setup-options">Requirements & Setup Options</a>
+      <ul>
+        <li><a href="#option-a-local-installation">Option A: Local Installation</a></li>
+        <li><a href="#option-b-docker-setup">Option B: Docker Setup</a></li>
+      </ul>
+    </li>
   </ul>
 </details>
 
@@ -57,11 +62,10 @@
 </details>
 
 <details>
-  <summary><a href="#testing-your-implementation">Testing & Deployment</a></summary>
+  <summary><a href="#getting-help">Getting Help & Next Steps</a></summary>
   <ul>
-    <li><a href="#testing-your-implementation">Testing Guidelines</a></li>
-    <li><a href="#getting-help">Debugging Tips</a></li>
-    <li><a href="#going-further">Next Steps</a></li>
+    <li><a href="#getting-help">Getting Help</a></li>
+    <li><a href="#going-further">Going Further</a></li>
   </ul>
 </details>
 
@@ -69,13 +73,19 @@
 
 ## Resources & Prerequisites 📋
 
-### Essential Reading
+## Essential Reading
 
 - [Tornado Cash Whitepaper](https://berkeley-defi.github.io/assets/material/Tornado%20Cash%20Whitepaper.pdf) - The foundational paper we're implementing
 - [Circomlib Documentation](https://github.com/iden3/circomlib) - Library of circuits we'll use
 - [Hardhat-ZKit](https://github.com/dl-solarity/hardhat-zkit) - Our testing framework
 
-### Requirements
+## Requirements & Setup Options
+
+You can choose between two setup methods:
+
+### Option A: Local Installation
+
+Requirements:
 
 - [Node.js >= 18](https://nodejs.org/en/download/package-manager)
 - [Circom](https://docs.circom.io/getting-started/installation/)
@@ -84,7 +94,7 @@
   - Cryptographic hash functions
   - Smart contracts (basic)
 
-## Setup 🚀
+Setup:
 
 ```bash
 # Clone the repository
@@ -101,6 +111,49 @@ npx hardhat compile
 npx hardhat zkit compile
 npx hardhat clean
 ```
+
+### Option B: Docker Setup
+
+Requirements:
+
+- [Docker](https://www.docker.com/products/docker-desktop/) installed on your system
+- Git
+- Basic familiarity with terminal
+
+Setup:
+
+```bash
+# Clone the repository
+git clone https://github.com/vaniiiii/zk-workshop
+cd zk-workshop
+```
+
+Start Docker container:
+
+For macOS/Linux:
+
+```bash
+docker run -it --rm -v $(pwd):/workspace vani0xff/zk-workshop bash
+```
+
+For Windows PowerShell:
+
+```powershell
+docker run -it --rm -v ${PWD}:/workspace vani0xff/zk-workshop bash
+```
+
+If Windows path issues occur, use full path:
+
+```powershell
+docker run -it --rm -v C:\full\path\to\workshop:/workspace vani0xff/zk-workshop bash
+```
+
+Working with Docker:
+
+- Edit files locally in your preferred editor
+- Run all commands in the Docker terminal
+- To exit Docker: type `exit`
+- To restart: run the docker run command again
 
 ## Background 🎯
 
@@ -158,7 +211,7 @@ The full implementation can be found in `scripts/withdraw.ts`.
 
 ## Workshop Tasks 🛠️
 
-### 1. CommitmentHasher
+## 1. CommitmentHasher
 
 **What we're building:**
 A circuit that creates two different hashes:
@@ -202,7 +255,7 @@ npx hardhat zkit compile
 npx hardhat test test/commitmentHasher.t.ts
 ```
 
-### 2. HashLeftRight
+## 2. HashLeftRight
 
 **What we're building:**
 A circuit that combines two inputs into one hash, used as the building block for our Merkle tree.
@@ -236,7 +289,7 @@ npx hardhat zkit compile
 npx hardhat test test/hashLeftRight.t.ts
 ```
 
-### 3. MerkleTreeChecker
+## 3. MerkleTreeChecker
 
 **What we're building:**
 A circuit that verifies a value exists in a Merkle tree without revealing which leaf it is.
@@ -270,7 +323,7 @@ npx hardhat zkit compile
 npx hardhat test test/merkleTreeChecker.t.ts
 ```
 
-### 4. Withdraw Circuit
+## 4. Withdraw Circuit
 
 **What we're building:**
 The main circuit that ties everything together to enable private withdrawals.
@@ -339,4 +392,5 @@ npx hardhat zkit verifiers
 
 # Deploy and test the contract
 npx hardhat run scripts/withdraw.ts
+
 ```
