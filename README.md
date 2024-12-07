@@ -96,7 +96,7 @@ npm install
 
 # Verify installation
 npx hardhat help
-npx hardhat zkit --h
+npx hardhat zkit
 npx hardhat compile
 npx hardhat zkit compile
 npx hardhat clean

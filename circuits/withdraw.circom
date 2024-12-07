@@ -1,7 +1,7 @@
 pragma circom 2.2.0;
 
 include "./commitment_hasher.circom";
-include "./merkle_tree_checker.circom";
+include "./merkletree_checker.circom";
 
 // Task: Create a withdrawal circuit that proves:
 // 1. The user knows a secret and nullifier that generate a commitment
