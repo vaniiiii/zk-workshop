@@ -71,7 +71,7 @@
 
 <hr style="border: 1px dashed #ccc;">
 
-## Resources & Prerequisites 📋
+# Resources & Prerequisites 📋
 
 ## Essential Reading
 
@@ -79,13 +79,13 @@
 - [Circomlib Documentation](https://github.com/iden3/circomlib) - Library of circuits we'll use
 - [Hardhat-ZKit](https://github.com/dl-solarity/hardhat-zkit) - Our testing framework
 
-## Requirements & Setup Options
+# Requirements & Setup Options
 
 You can choose between two setup methods:
 
-### Option A: Local Installation
+## Option A: Local Installation
 
-Requirements:
+### Requirements:
 
 - [Node.js >= 18](https://nodejs.org/en/download/package-manager)
 - [Circom](https://docs.circom.io/getting-started/installation/)
@@ -94,7 +94,7 @@ Requirements:
   - Cryptographic hash functions
   - Smart contracts (basic)
 
-Setup:
+### Setup:
 
 ```bash
 # Clone the repository
@@ -110,17 +110,21 @@ npx hardhat zkit
 npx hardhat compile
 npx hardhat zkit compile
 npx hardhat clean
+
+# Verify Circom installation
+circom --help
+circom --version
 ```
 
-### Option B: Docker Setup
+## Option B: Docker Setup
 
-Requirements:
+### Requirements:
 
 - [Docker](https://www.docker.com/products/docker-desktop/) installed on your system
 - Git
 - Basic familiarity with terminal
 
-Setup:
+### Setup:
 
 ```bash
 # Clone the repository
@@ -148,41 +152,47 @@ If Windows path issues occur, use full path:
 docker run -it --rm -v C:\full\path\to\workshop:/workspace vani0xff/zk-workshop bash
 ```
 
-Working with Docker:
+### Working with Docker:
 
 - Edit files locally in your preferred editor
 - Run all commands in the Docker terminal
 - To exit Docker: type `exit`
 - To restart: run the docker run command again
+- Verify setup inside Docker container:
+  ```bash
+  circom --help
+  circom --version
+  ```
 
-## Background 🎯
+# Background 🎯
 
-### What is a Mixer?
+## What is a Mixer?
 
 A mixer is a privacy protocol that enables users to break the on-chain link between source and destination addresses. It works like a pool where many users deposit fixed amounts of tokens, and later withdraw them to different addresses, making it impossible to trace which deposit corresponds to which withdrawal.
 
-### How Does it Work?
+## How Does it Work?
 
-1. **Deposit Phase**
+### 1. Deposit Phase
 
-   - User generates two random values: `nullifier` and `secret`
-   - Creates a commitment (hash of both values)
-   - Deposits tokens along with the commitment
-   - Commitment gets added to a Merkle tree
+- User generates two random values: `nullifier` and `secret`
+- Creates a commitment (hash of both values)
+- Deposits tokens along with the commitment
+- Commitment gets added to a Merkle tree
 
-2. **Withdrawal Phase**
+### 2. Withdrawal Phase
 
-   - User provides a zero-knowledge proof showing:
-     - They know a secret corresponding to a commitment in the tree
-     - They haven't withdrawn these tokens before (using nullifier)
-   - If proof verifies, tokens are sent to a new address
+- User provides a zero-knowledge proof showing:
+  - They know a secret corresponding to a commitment in the tree
+  - They haven't withdrawn these tokens before (using nullifier)
+- If proof verifies, tokens are sent to a new address
 
-3. **Privacy Protection**
-   - Commitments hide the actual secret values
-   - Merkle tree proves membership without revealing which leaf
-   - Nullifiers prevent double-spending without linking to deposit
+### 3. Privacy Protection
 
-### Technical Overview
+- Commitments hide the actual secret values
+- Merkle tree proves membership without revealing which leaf
+- Nullifiers prevent double-spending without linking to deposit
+
+## Technical Overview
 
 Our implementation consists of four main components:
 
@@ -191,15 +201,15 @@ Our implementation consists of four main components:
 3. **MerkleTreeChecker**: Verifies membership proofs
 4. **Withdraw**: Main circuit combining all components
 
-### Workshop Structure
+## Workshop Structure
 
 The workshop consists of two parts:
 
-#### Part 1: Circuit Implementation (Current)
+### Part 1: Circuit Implementation (Current)
 
 In this part, we'll implement the core zero-knowledge circuits that power the mixer. You'll build each component step by step, with tests to verify your implementation.
 
-#### Part 2: Smart Contract Integration (Following)
+### Part 2: Smart Contract Integration (Following)
 
 After completing the circuits, we'll explore the smart contract side. This includes:
 
@@ -209,17 +219,18 @@ After completing the circuits, we'll explore the smart contract side. This inclu
 
 The full implementation can be found in `scripts/withdraw.ts`.
 
-## Workshop Tasks 🛠️
+# Workshop Tasks 🛠️
 
 ## 1. CommitmentHasher
 
-**What we're building:**
+### What we're building:
+
 A circuit that creates two different hashes:
 
 - A commitment that securely combines nullifier and secret
 - A nullifier hash that serves as a public identifier
 
-**Technical Details:**
+### Technical Details:
 
 - Uses Pedersen Hash, a specialized commitment scheme that:
   - Maps inputs to points on an elliptic curve
@@ -248,7 +259,7 @@ component nullifierHasher = Pedersen(248);
 - Order of bits in commitment
 </details>
 
-**Testing Your Implementation:**
+### Testing Your Implementation:
 
 ```bash
 npx hardhat zkit compile
@@ -257,10 +268,11 @@ npx hardhat test test/commitmentHasher.t.ts
 
 ## 2. HashLeftRight
 
-**What we're building:**
+### What we're building:
+
 A circuit that combines two inputs into one hash, used as the building block for our Merkle tree.
 
-**Technical Details:**
+### Technical Details:
 
 - Uses MiMCSponge hash function:
   - Optimized for ZK circuits
@@ -282,7 +294,7 @@ component hasher = MiMCSponge(2, 220, 1);
 
 </details>
 
-**Testing Your Implementation:**
+### Testing Your Implementation:
 
 ```bash
 npx hardhat zkit compile
@@ -291,10 +303,11 @@ npx hardhat test test/hashLeftRight.t.ts
 
 ## 3. MerkleTreeChecker
 
-**What we're building:**
+### What we're building:
+
 A circuit that verifies a value exists in a Merkle tree without revealing which leaf it is.
 
-**Technical Details:**
+### Technical Details:
 
 - Uses path verification
 - Implements selective hash combination
@@ -316,7 +329,7 @@ component hashers[levels];
 
 </details>
 
-**Testing Your Implementation:**
+### Testing Your Implementation:
 
 ```bash
 npx hardhat zkit compile
@@ -325,10 +338,11 @@ npx hardhat test test/merkleTreeChecker.t.ts
 
 ## 4. Withdraw Circuit
 
-**What we're building:**
+### What we're building:
+
 The main circuit that ties everything together to enable private withdrawals.
 
-**Technical Details:**
+### Technical Details:
 
 - Combines commitment verification
 - Implements membership proof
@@ -351,7 +365,7 @@ component tree = MerkleTreeChecker(levels);
 
 </details>
 
-**Testing Your Implementation:**
+### Testing Your Implementation:
 
 ```bash
 npx hardhat zkit compile
@@ -359,7 +373,7 @@ npx hardhat zkit verifiers
 npx hardhat test test/withdraw.t.ts
 ```
 
-## Getting Help 🤝
+# Getting Help 🤝
 
 Use logging for debugging:
 
@@ -382,7 +396,7 @@ npx hardhat clean
 npx hardhat zkit compile
 ```
 
-## Going Further 🚀
+# Going Further 🚀
 
 To test your circuit with the smart contract implementation:
 
@@ -392,5 +406,4 @@ npx hardhat zkit verifiers
 
 # Deploy and test the contract
 npx hardhat run scripts/withdraw.ts
-
 ```
