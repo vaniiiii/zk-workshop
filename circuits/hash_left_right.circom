@@ -15,4 +15,6 @@ template HashLeftRight() {
     // TODO: Use MiMCSponge to create a hash of the two inputs
 }
 
+// NOTE: Uncomment last line to test your implementation.
+// After testing, comment it back.
 // component main { public [left, right]} = HashLeftRight();

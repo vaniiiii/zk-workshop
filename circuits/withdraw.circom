@@ -29,5 +29,5 @@ template Withdraw(levels) {
     
     // BONUS: prevent non-recipient from using the proof @ ask-for-help
 }
-
-component main { public [root, nullifierHash, recipient] } = Withdraw(20);
+// NOTE: Uncomment last line to test your implementation.
+// component main { public [root, nullifierHash, recipient] } = Withdraw(20);

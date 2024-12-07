@@ -20,4 +20,6 @@ template CommitmentHasher() {
     // use out[0] as the hash result.
 }
 
+// NOTE: Uncomment last line to test your implementation:
+// After testing, comment it back.
 // component main { public [nullifier, secret]} = CommitmentHasher();

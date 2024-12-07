@@ -38,4 +38,6 @@ template MerkleTreeChecker(levels) {
     // 4. At the end, verify computed hash matches the provided root
 }
 
+// NOTE: Uncomment last line to test your implementation.
+// After testing, comment it back.
 // component main { public [root] } = MerkleTreeChecker(20);
