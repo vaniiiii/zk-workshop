@@ -78,6 +78,7 @@
 ### Requirements
 
 - [Node.js >= 18](https://nodejs.org/en/download/package-manager)
+- [Circom](https://docs.circom.io/getting-started/installation/)
 - Basic familiarity with terminal
 - Basic understanding of:
   - Cryptographic hash functions
