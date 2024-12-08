@@ -116,7 +116,7 @@ circom --help
 circom --version
 ```
 
-## Option B: Docker Setup
+## Option B: Docker Setup (Recommended for Windows)
 
 ### Requirements:
 
