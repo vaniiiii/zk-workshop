@@ -201,6 +201,23 @@ Our implementation consists of four main components:
 3. **MerkleTreeChecker**: Verifies membership proofs
 4. **Withdraw**: Main circuit combining all components
 
+### Circuit File Structure
+
+```
+circuits/
+├── lib/                          # Template implementations (edit these)
+│   ├── commitment_hasher.circom
+│   ├── hash_left_right.circom
+│   ├── merkletree_checker.circom
+│   └── withdraw.circom
+├── commitment_hasher.circom      # Entry points (do not edit)
+├── hash_left_right.circom
+├── merkletree_checker.circom
+└── withdraw.circom
+```
+
+All workshop tasks are completed in the `circuits/lib/` directory. The entry point files in `circuits/` handle circuit instantiation.
+
 ## Workshop Structure
 
 The workshop consists of two parts:
@@ -222,6 +239,8 @@ The full implementation can be found in `scripts/withdraw.ts`.
 # Workshop Tasks 🛠️
 
 ## 1. CommitmentHasher
+
+📁 `circuits/lib/commitment_hasher.circom`
 
 ### What we're building:
 
@@ -268,6 +287,8 @@ npx hardhat test test/commitmentHasher.t.ts
 
 ## 2. HashLeftRight
 
+📁 `circuits/lib/hash_left_right.circom`
+
 ### What we're building:
 
 A circuit that combines two inputs into one hash, used as the building block for our Merkle tree.
@@ -303,6 +324,8 @@ npx hardhat test test/hashLeftRight.t.ts
 
 ## 3. MerkleTreeChecker
 
+📁 `circuits/lib/merkletree_checker.circom`
+
 ### What we're building:
 
 A circuit that verifies a value exists in a Merkle tree without revealing which leaf it is.
@@ -337,6 +360,8 @@ npx hardhat test test/merkleTreeChecker.t.ts
 ```
 
 ## 4. Withdraw Circuit
+
+📁 `circuits/lib/withdraw.circom`
 
 ### What we're building:
 

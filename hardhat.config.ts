@@ -5,6 +5,11 @@ import "@solarity/chai-zkit";
 
 const config: HardhatUserConfig = {
   solidity: "0.8.28",
+  zkit: {
+    compilationSettings: {
+      skipFiles: ["lib"],
+    },
+  },
 };
 
 export default config;
