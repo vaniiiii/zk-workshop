@@ -127,17 +127,29 @@ describe("Withdraw Test", () => {
     const calldata: CalldataWithdrawGroth16 =
       await circuit.generateCalldata(proof);
 
-    const tamperedCalldata: CalldataWithdrawGroth16 = [
-      [calldata[0][1], calldata[0][0]],
-      calldata[1],
-      calldata[2],
-      calldata[3],
-    ];
+    const tamperedCalldata: CalldataWithdrawGroth16 = {
+      proofPoints: {
+        a: [calldata.proofPoints.a[1], calldata.proofPoints.a[0]],
+        b: calldata.proofPoints.b,
+        c: calldata.proofPoints.c,
+      },
+      publicSignals: calldata.publicSignals,
+    };
 
-    const validResult = await verifier.verifyProof(...calldata);
+    const validResult = await verifier.verifyProof(
+      calldata.proofPoints.a,
+      calldata.proofPoints.b,
+      calldata.proofPoints.c,
+      calldata.publicSignals
+    );
     expect(validResult).to.be.true;
 
-    const invalidResult = await verifier.verifyProof(...tamperedCalldata);
+    const invalidResult = await verifier.verifyProof(
+      tamperedCalldata.proofPoints.a,
+      tamperedCalldata.proofPoints.b,
+      tamperedCalldata.proofPoints.c,
+      tamperedCalldata.publicSignals
+    );
     expect(invalidResult).to.be.false;
   });
 });
