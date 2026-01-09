@@ -36,20 +36,4 @@ template MerkleTreeChecker(levels) {
     // 2. Hash the ordered pair using HashLeftRight
     // 3. Use the result as input for next level
     // 4. At the end, verify computed hash matches the provided root
-    component hashers[levels];
-    component selectors[levels];
-
-    for (var i = 0; i < levels; i++) {
-        selectors[i] = DualMux();
-        hashers[i] = HashLeftRight();
-
-        selectors[i].in[0] <== i == 0 ? leaf : hashers[i-1].hash;
-        selectors[i].in[1] <== pathElements[i];
-        selectors[i].s <== pathIndices[i];
-
-        hashers[i].left <== selectors[i].out[0];
-        hashers[i].right <== selectors[i].out[1];
-    }
-
-    root === hashers[levels - 1].hash;
 }

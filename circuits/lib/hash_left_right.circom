@@ -13,10 +13,4 @@ template HashLeftRight() {
     signal output hash;
 
     // TODO: Use MiMCSponge to create a hash of the two inputs
-    component hasher = MiMCSponge(2, 220, 1);
-    hasher.ins[0] <== left;
-    hasher.ins[1] <== right;
-    hasher.k <== 0;
-
-    hash <== hasher.outs[0];
 }

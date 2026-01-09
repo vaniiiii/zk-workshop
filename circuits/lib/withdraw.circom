@@ -26,20 +26,6 @@ template Withdraw(levels) {
     // TODO:
     // 1. Use CommitmentHasher to generate commitment and verify nullifierHash
     // 2. Use MerkleTreeChecker to verify the commitment exists in the tree
-    component commitmentHasher = CommitmentHasher();
-    commitmentHasher.nullifier <== nullifier;
-    commitmentHasher.secret <== secret;
 
-    component merkleTreeChecker = MerkleTreeChecker(levels);
-    merkleTreeChecker.root <== root;
-    merkleTreeChecker.leaf <== commitmentHasher.commitment;
-
-    for (var i = 0; i < levels; i++) {
-        merkleTreeChecker.pathElements[i] <== pathElements[i];
-        merkleTreeChecker.pathIndices[i] <== pathIndices[i];
-    }
-
-    root === merkleTreeChecker.root;
-    commitmentHasher.nullifierHash === nullifierHash;
     // BONUS: prevent non-recipient from using the proof @ ask-for-help
 }
