@@ -20,7 +20,7 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 # Install circom
 RUN git clone https://github.com/iden3/circom.git && \
     cd circom && \
-    git checkout v2.1.6 && \
+    git checkout v2.2.0 && \
     cargo build --release && \
     cargo install --path circom && \
     cd .. && \
