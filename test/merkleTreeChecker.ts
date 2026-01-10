@@ -29,4 +29,25 @@ describe("MerkleTreeChecker Test", () => {
 
     await expect(circuit).with.witnessInputs(input).to.have.witnessOutputs({});
   });
+
+  it("should reject invalid merkle proof", async () => {
+    const { commitment } = await generateCommitment();
+    const tree = await createTree();
+    tree.insert(commitment.toString());
+
+    const { pathElements, pathIndices } = tree.path(
+      tree.indexOf(commitment.toString())
+    );
+
+    const input = {
+      leaf: commitment,
+      root: BigInt(999), // Wrong root
+      pathElements: pathElements.map((el) => BigInt(el)),
+      pathIndices,
+    };
+
+    await expect(expect(circuit).with.witnessInputs(input)).to.be.rejectedWith(
+      "Error in template MerkleTreeChecker"
+    );
+  });
 });
